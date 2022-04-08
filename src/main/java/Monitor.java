@@ -2,6 +2,13 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Implements monitor , that keep tracks of philosophers state.
+ * Uses ReentrantLock to keep track if chopstick is picked up or not
+ * to allowed philosopher to change state.
+ *
+ * @author  Aironas
+ */
 public class Monitor {
   private int numOfPhilosophers;
   final Lock lock;
@@ -9,6 +16,11 @@ public class Monitor {
   private States [] state;
   private Condition [] cond;
 
+  /**
+   * Constructor for monitor.
+   * sets initial state and condition of philosopher.
+   * @param numOfPhil number pf philosophers at the table
+   */
   Monitor(int numOfPhil){
     this.numOfPhilosophers = numOfPhil;
     lock = new ReentrantLock();
@@ -20,6 +32,11 @@ public class Monitor {
     }
   }
 
+  /**
+   * Method that makes Philosopher pick up two chopstick at the same time if
+   * the chopsticks is available, if not waits until signal.
+   * @param i philosopher number
+   */
   public void PickUp(int i){
     lock.lock();
     try {
@@ -44,6 +61,12 @@ public class Monitor {
     }
   }
 
+  /**
+   * Method that makes philosopher put down chopsticks at the same time and
+   * checks right and left philosophers is hungry and if chopstick is available to them
+   * signal them to puck up chopsticks
+   * @param i
+   */
   public void PutDown(int i){
     lock.lock();
     try{
